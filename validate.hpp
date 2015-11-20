@@ -1,12 +1,12 @@
 #ifndef VALIDATE_H
 #define VALIDATE_H
 
-#include <vector>
+#include <list>
 #include "token.hpp"
 #include "expression.hpp"
 
-void validate(std::vector<token> &tokens, std::vector<expr> &list, int max_line, bool rep = false, bool short_rep = false);
-token pop(std::vector<token> &list);
+void validate(std::list<token> &tokens, std::list<expr> &list, int max_line, bool rep = false, bool short_rep = false);
+token pop(std::list<token> &list);
 void syntax_error(int line);
 
 #endif

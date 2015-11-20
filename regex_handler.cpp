@@ -2,15 +2,15 @@
 #include <sstream>
 #include <locale>
 
-void search_and_add(std::string &str, std::vector<token> &tokens, int line);
+void search_and_add(std::string &str, std::list<token> &tokens, int line);
 void toupper(std::string &str);
 bool valid_char(char c);
 
 bool valid_char(char c){
-    return ((64 < c && c < 91) | (47 < c && c < 58) | c == 35);   // Letters Numbers # 
+    return ((64 < c && c < 91) | (47 < c && c < 58) | c == 35);   // Letters | Numbers | # 
 }
 
-void search_and_add(std::string &str, std::vector<token> &tokens, int line){
+void search_and_add(std::string &str, std::list<token> &tokens, int line){
     std::string::iterator iter = str.begin();
     std::string::iterator end = str.end();
 

@@ -1,5 +1,5 @@
 #include <string>
-#include <vector>
+#include <list>
 #include <iostream>
 
 #include "token.hpp"
@@ -11,7 +11,7 @@
 using namespace std;
 
 int main(){
-    vector<string> content_list;
+    list<string> content_list;
     string input_line;
     int counter = 0;
     while(getline(cin, input_line)){
@@ -19,12 +19,14 @@ int main(){
         counter++;
     }
 
-    vector<token> tokens;
-    for (int x = 0; x < content_list.size(); x++){
-        search_and_add(content_list[x], tokens, x+1);
+    list<token> tokens;
+    int x = 0;
+    while (!content_list.empty()){
+        search_and_add(content_list.front(), tokens, ++x);
+        content_list.pop_front();
     }
 
-    vector<expr> exp;
+    list<expr> exp;
     validate(tokens, exp, counter);
 
     execute(exp);

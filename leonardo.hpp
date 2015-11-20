@@ -1,11 +1,11 @@
 #ifndef LEONARDO_HPP
 #define LEONARDO_HPP
 
-#include <vector>
+#include <list>
 #include <string>
 #include "expression.hpp"
 
-void execute(std::vector<expr> &list);
+void execute(std::list<expr> &list);
 void print_result();
 double round_num(double input, int precision);
 

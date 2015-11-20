@@ -7,7 +7,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-void execute(std::vector<expr> &list);
+void execute(std::list<expr> &list);
 void print_result();
 double round_num(double input, int precision);
 
@@ -25,10 +25,10 @@ double old_y = 0;
 bool is_down = false;
 double x = 0;
 double y = 0;
-double deg = 0;
+int deg = 0;
 std::string clr = "#0000FF";
 
-void execute(std::vector<expr> &list){
+void execute(std::list<expr> &list){
     for (expr exp :list){
         if (!exp.cmd.compare("UP")) up();
         else if(!exp.cmd.compare("DOWN")) down();
@@ -53,7 +53,7 @@ double round_num(double input, int precision){
     std::stringstream s;
     s << std::setprecision(precision) << std::setiosflags(std::ios_base::fixed) << input;
     s >> input;
-    return input;
+    return std::max(0.0000, input);
 }
 
 
@@ -83,7 +83,7 @@ void forw(int &&arg){
 }
 
 void back(int &&arg){
-    forw(-std::move(arg));
+    forw(std::move(-arg));
 }
 
 void color(std::string arg){

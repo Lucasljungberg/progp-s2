@@ -2,11 +2,11 @@
 #include <iostream>
 #include <algorithm>
 
-void validate(std::vector<token> &tokens, std::vector<expr> &list, int max_line, bool rep, bool short_rep);
-token pop(std::vector<token> &list);
+void validate(std::list<token> &tokens, std::list<expr> &list, int max_line, bool rep, bool short_rep);
+token pop(std::list<token> &list);
 void syntax_error(int line);
 
-void validate(std::vector<token> &tokens, std::vector<expr> &list, int max_line, bool rep, bool short_rep){
+void validate(std::list<token> &tokens, std::list<expr> &list, int max_line, bool rep, bool short_rep){
     token current;
     while (tokens.size() > 0){
 
@@ -84,13 +84,13 @@ void validate(std::vector<token> &tokens, std::vector<expr> &list, int max_line,
             token arg2 = pop(tokens);
 
             if (arg2.type == CT){
-                std::vector<expr> replist;
+                std::list<expr> replist;
                 validate(tokens, replist, max_line, true);
                 for (int x = 0; x < reps; x++){
                     list.insert(list.end(), replist.begin(), replist.end());
                 }
             } else {
-                std::vector<expr> replist;
+                std::list<expr> replist;
                 tokens.insert(tokens.begin(), arg2);
                 validate(tokens, replist, max_line, false, true);
                 for (int x = 0; x < reps; x++){
@@ -114,9 +114,9 @@ void validate(std::vector<token> &tokens, std::vector<expr> &list, int max_line,
 
 }
 
-token pop(std::vector<token> &list){
+token pop(std::list<token> &list){
     token tok(list.front());
-    list.erase(list.begin());
+    list.pop_front();
     return tok;
 }
 

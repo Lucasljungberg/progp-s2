@@ -1,21 +1,19 @@
 #include "validate.hpp"
 #include <iostream>
+#include <algorithm>
 
-void validate(std::vector<token> &tokens, std::vector<expr> &list, bool rep, bool short_rep);
+void validate(std::vector<token> &tokens, std::vector<expr> &list, int max_line, bool rep, bool short_rep);
 token pop(std::vector<token> &list);
 void syntax_error(int line);
 
-void validate(std::vector<token> &tokens, std::vector<expr> &list, bool rep, bool short_rep){
+void validate(std::vector<token> &tokens, std::vector<expr> &list, int max_line, bool rep, bool short_rep){
     token current;
     while (tokens.size() > 0){
 
         current = pop(tokens);
 
-        if (current.type == NONE){
-            syntax_error(current.line);
-        }
 
-        if (tokens.empty()){
+        if (current.type == NONE){
             syntax_error(current.line);
         }
 
@@ -83,22 +81,24 @@ void validate(std::vector<token> &tokens, std::vector<expr> &list, bool rep, boo
             }
             int reps = stoi(arg1.value);
 
-            token arg2 = tokens.front();
+            token arg2 = pop(tokens);
 
             if (arg2.type == CT){
                 std::vector<expr> replist;
-                tokens.erase(tokens.begin());
-                validate(tokens, replist, true);
+                validate(tokens, replist, max_line, true);
                 for (int x = 0; x < reps; x++){
                     list.insert(list.end(), replist.begin(), replist.end());
                 }
             } else {
                 std::vector<expr> replist;
-                validate(tokens, replist, false, true);
+                tokens.insert(tokens.begin(), arg2);
+                validate(tokens, replist, max_line, false, true);
                 for (int x = 0; x < reps; x++){
                     list.insert(list.end(), replist.begin(), replist.end());
                 }
             }
+        } else if(current.type == EMPTY){
+            // nop
         } else {
             syntax_error(current.line);
         }
@@ -109,19 +109,18 @@ void validate(std::vector<token> &tokens, std::vector<expr> &list, bool rep, boo
     };
 
     if (rep){
-        syntax_error(current.line);
+        syntax_error(std::max(current.line, max_line-1));
     }
 
 }
 
 token pop(std::vector<token> &list){
-
     token tok(list.front());
     list.erase(list.begin());
     return tok;
 }
 
 void syntax_error(int line){
-    std::cout << "Syntaxerror på rad " << line << std::endl;
-    exit(1);
+    std::cout << "Syntaxfel på rad " << line << std::endl;
+    exit(0);
 }

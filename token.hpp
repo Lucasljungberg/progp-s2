@@ -12,6 +12,7 @@ enum TokenType{
     DOT,
     CT,
     REP,
+    EMPTY,
     NONE
 };
 

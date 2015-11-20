@@ -22,7 +22,6 @@ void color(std::string arg);
 double old_x = 0;
 double old_y = 0;
 
-bool moved = false;
 bool is_down = false;
 double x = 0;
 double y = 0;
@@ -31,18 +30,13 @@ std::string clr = "#0000FF";
 
 void execute(std::vector<expr> &list){
     for (expr exp :list){
-        if (match(exp.cmd, "up")) up();
-        else if(match(exp.cmd, "down")) down();
-        else if(match(exp.cmd, "right")) right(stoi(exp.arg));
-        else if(match(exp.cmd, "left")) left(stoi(exp.arg));
-        else if(match(exp.cmd, "forw")) forw(stoi(exp.arg));
-        else if(match(exp.cmd, "back")) back(stoi(exp.arg));
-        else if(match(exp.cmd, "color")) color(exp.arg);
-
-        if(moved && is_down){
-            print_result();
-        }
-        moved = false;
+        if (!exp.cmd.compare("UP")) up();
+        else if(!exp.cmd.compare("DOWN")) down();
+        else if(!exp.cmd.compare("RIGHT")) right(stoi(exp.arg));
+        else if(!exp.cmd.compare("LEFT")) left(stoi(exp.arg));
+        else if(!exp.cmd.compare("FORW")) forw(stoi(exp.arg));
+        else if(!exp.cmd.compare("BACK")) back(stoi(exp.arg));
+        else if(!exp.cmd.compare("COLOR")) color(exp.arg);
     }
 }
 
@@ -72,27 +66,24 @@ void down(){
 }
 
 void right(int &&arg){
-    deg += arg;
+    deg -= arg;
 }
 
 void left(int &&arg){
-    deg -= arg;
+    deg += arg;
 }
 
 void forw(int &&arg){
     old_x = x;
     old_y = y;
     x += arg*cos(M_PI*deg/180);
-    y -= arg*sin(M_PI*deg/180);
-    moved = true;
+    y += arg*sin(M_PI*deg/180);
+    if (is_down)
+        print_result();
 }
 
 void back(int &&arg){
-    old_x = x;
-    old_y = y;
-    x -= arg*cos(M_PI*deg/180);
-    y += arg*sin(M_PI*deg/180);
-    moved = true;
+    forw(-std::move(arg));
 }
 
 void color(std::string arg){

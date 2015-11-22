@@ -9,7 +9,7 @@
 
 void execute(std::list<expr> &list);
 void print_result();
-double round_num(double input, int precision);
+double round_num(double input);
 
 void up();
 void down();
@@ -17,7 +17,7 @@ void right(int &&arg);
 void left(int &&arg);
 void forw(int &&arg);
 void back(int &&arg);
-void color(std::string arg);
+void color(std::string &&arg);
 
 double old_x = 0;
 double old_y = 0;
@@ -36,24 +36,24 @@ void execute(std::list<expr> &list){
         else if(!exp.cmd.compare("LEFT")) left(stoi(exp.arg));
         else if(!exp.cmd.compare("FORW")) forw(stoi(exp.arg));
         else if(!exp.cmd.compare("BACK")) back(stoi(exp.arg));
-        else if(!exp.cmd.compare("COLOR")) color(exp.arg);
+        else if(!exp.cmd.compare("COLOR")) color(std::move(exp.arg));
     }
 }
 
 void print_result(){
-    std::cout << std::left << std::fixed << std::setw(8) << clr;
-    std::cout << std::left << std::fixed << std::setw(8) << std::setprecision(4) << round_num(old_x, 4);
-    std::cout << std::left << std::fixed << std::setw(8) << std::setprecision(4) << round_num(old_y, 4);
-    std::cout << std::left << std::fixed << std::setw(8) << std::setprecision(4) << round_num(x, 4);
-    std::cout << std::left << std::fixed << std::setw(8) << std::setprecision(4) << round_num(y, 4);
+    std::cout << std::left << std::fixed << clr;
+    std::cout << std::left << std::fixed << std::setprecision(4) << " " << round_num(old_x);
+    std::cout << std::left << std::fixed << std::setprecision(4) << " " << round_num(old_y);
+    std::cout << std::left << std::fixed << std::setprecision(4) << " " << round_num(x);
+    std::cout << std::left << std::fixed << std::setprecision(4) << " " << round_num(y);
     std::cout << std::endl;
 }
 
-double round_num(double input, int precision){
-    std::stringstream s;
-    s << std::setprecision(precision) << std::setiosflags(std::ios_base::fixed) << input;
-    s >> input;
-    return std::max(0.0000, input);
+double round_num(double input){
+    input *= 10000.0;
+    if (std::abs(input) < 0.0001) return 0.0000;
+    else if (input < 0) return (std::ceil(input - 0.5) / 10000.0);
+    return (std::floor(input + 0.5) / 10000.0);
 }
 
 
@@ -86,6 +86,6 @@ void back(int &&arg){
     forw(std::move(-arg));
 }
 
-void color(std::string arg){
+void color(std::string &&arg){
     clr = arg;
 }

@@ -4,16 +4,16 @@
 #include <string>
 
 enum TokenType{
-    XY,
-    Z,
-    CLR,
-    ARG,
-    CARG,
-    DOT,
-    CT,
-    REP,
-    EMPTY,
-    NONE
+    XY,         // LEFT RIGHT BACK FORW
+    Z,          // UP DOWN
+    CLR,        // COLOR
+    ARG,        // Integer
+    CARG,       // #[6 Hex-decimal Integers]
+    DOT,        // .
+    CT,         // "
+    REP,        // REP
+    EMPTY,      // Not needed
+    NONE        // Everything else
 };
 
 TokenType find_type(std::string str, int line);

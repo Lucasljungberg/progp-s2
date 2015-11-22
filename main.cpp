@@ -1,3 +1,9 @@
+/* 
+    Authors:
+        Lucas Ljungberg <lucaslj@kth.se>
+        Peter Jonsson   <peterjo6@kth.se>
+*/
+
 #include <string>
 #include <list>
 #include <iostream>
@@ -11,19 +17,11 @@
 using namespace std;
 
 int main(){
-    list<string> content_list;
     string input_line;
+    list<token> tokens;
     int counter = 0;
     while(getline(cin, input_line)){
-        content_list.push_back(input_line);
-        counter++;
-    }
-
-    list<token> tokens;
-    int x = 0;
-    while (!content_list.empty()){
-        search_and_add(content_list.front(), tokens, ++x);
-        content_list.pop_front();
+        search_and_add(input_line, tokens, ++counter);
     }
 
     list<expr> exp;

@@ -7,7 +7,7 @@ void toupper(std::string &str);
 bool valid_char(char c);
 
 bool valid_char(char c){
-    return ((64 < c && c < 91) | (47 < c && c < 58) | c == 35);   // Letters | Numbers | # 
+    return ((64 < c && c < 91) || (47 < c && c < 58) || c == 35);   // Letters | Numbers | # 
 }
 
 void search_and_add(std::string &str, std::list<token> &tokens, int line){
@@ -41,8 +41,7 @@ void search_and_add(std::string &str, std::list<token> &tokens, int line){
             }
             stream.str("");
             stream.clear();
-            std::string p = ".";
-            token dot_tok(std::move(p), std::move(line));
+            token dot_tok(".", std::move(line));
             tokens.push_back(dot_tok);
         } else if (current == 32) {     // Space
             std::string s;

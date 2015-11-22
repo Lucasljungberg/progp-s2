@@ -1,5 +1,6 @@
 #include "token.hpp"
 #include "regex_handler.hpp"
+#include <iostream>
 
 bool is_number(std::string str){
     if (str.empty()){
@@ -48,6 +49,8 @@ TokenType find_type(std::string str, int line){
     }else if(!str.compare("\"")){
         return CT;
     }else if(str.empty()){
+        std::cout << "Syntaxfel på rad " << line << std::endl;
+        exit(0);
         return EMPTY;
     }else{
         return NONE;
